@@ -24,7 +24,6 @@ class AuthRoute extends React.Component {
             this.props.history.push('/login')
           }
         }
-        console.log(res.data)
       })
     // 是否登录
     // 根据现在的url, login 是不需要调整

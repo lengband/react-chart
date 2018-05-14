@@ -23,8 +23,6 @@ class GeniusInfo extends React.Component {
     })
   }
   selectAvatar (imgName) {
-    console.log(imgName);
-    
     this.setState({
       avatar: imgName
     })
