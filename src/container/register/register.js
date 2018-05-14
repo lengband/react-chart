@@ -40,11 +40,11 @@ class Register extends React.Component {
         <Logo></Logo>
         <h2>注册页</h2>
         <WingBlank>
+          <NoticeBar>
+            {this.props.msg}
+          </NoticeBar>
+          <WhiteSpace />
           <List>
-            <NoticeBar>
-              {this.props.msg}
-            </NoticeBar>
-            <WhiteSpace size='lg'/>
             <InputItem
               onChange={v => this.handleChange('user', v)}
             >用户名</InputItem>
