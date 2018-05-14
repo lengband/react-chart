@@ -1,5 +1,4 @@
 import React from 'react'
-import { SSL_OP_PKCS1_CHECK_2 } from 'constants';
 import { TabBar, NavBar } from 'antd-mobile'
 import { connect } from 'react-redux'
 import NavLinkBar from '../navlinkbar/NavLinkBar'

@@ -15,8 +15,7 @@ class Boss extends React.Component {
   }
 
   componentDidMount () {
-    this.props.getUserList('genius')
-    getUserList
+    this.props.getUserList('genius') // 获取牛人列表
   }
 
   render () {
