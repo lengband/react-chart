@@ -9,9 +9,15 @@ const _filter = { 'pwd': 0, '__v': 0 }
 Router.get('/list', (req, res) => {
   const { type } = req.query
   // User.remove({}, (err, doc) => {}) // 删除 all
-  User.find({type}, (err, doc) => {
-    return res.json({code: 0, data: doc})
-  })
+  if (!type) {
+    User.find({}, (err, doc) => {
+      return res.json({code: 0, data: doc})
+    })
+  } else {
+    User.find({type}, (err, doc) => {
+      return res.json({code: 0, data: doc})
+    })
+  }
 })
 
 Router.get('/info', (req, res) => {

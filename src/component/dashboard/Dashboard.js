@@ -1,13 +1,13 @@
 import React from 'react'
-import { TabBar, NavBar } from 'antd-mobile'
+import { NavBar } from 'antd-mobile'
 import { connect } from 'react-redux'
 import NavLinkBar from '../navlinkbar/NavLinkBar'
 import { Route, Switch } from 'react-router-dom'
 import Boss from '../../component/boss/Boss'
+import Genius from '../../component/genius/Genius'
+import User from '../../component/user/User'
 
-const Genius = () => <h2>Genius首页</h2>
 const Msg = () => <h2>Msg首页</h2>
-const User = () => <h2>User首页</h2>
 
 @connect(
   state => state
