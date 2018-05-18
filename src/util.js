@@ -8,3 +8,7 @@ export function getRedirectPath ({ type, avatar }) {
   }
   return url
 }
+
+export function getChatId (userId, targetId) { // 用户ID 聊天ID
+  return [userId, targetId].sort().join('_')
+}

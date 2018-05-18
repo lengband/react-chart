@@ -2,9 +2,15 @@ const express = require('express')
 const utils = require('utility')
 const Router = express.Router()
 const models = require('./model')
-
 const User = models.getModel('user')
+const Chat = models.getModel('chat')
+
 const _filter = { 'pwd': 0, '__v': 0 }
+
+function md5Pwd (pwd) {
+  const salt = 'react_chat_webAPP_lengband@163.com'
+  return utils.md5(utils.md5(pwd + salt))
+}
 
 Router.get('/list', (req, res) => {
   const { type } = req.query
@@ -33,11 +39,6 @@ Router.get('/info', (req, res) => {
   })
 })
 
-function md5Pwd (pwd) {
-  const salt = 'react_chat_webAPP_lengband@163.com'
-  return utils.md5(utils.md5(pwd + salt))
-}
-
 Router.post('/register', (req, res) => {
   const { user, pwd, type } = req.body
   User.findOne({ user }, (err, doc) => {
@@ -60,6 +61,21 @@ Router.post('/register', (req, res) => {
     //   }
     //   return res.json({ code: 0 })
     // })
+  })
+})
+
+Router.get('/getmsglist', (req, res) => {
+  const user = req.cookies.userid
+  User.find({}, (err, userdoc) => {
+    let users = {}
+    userdoc.forEach(v => {
+      users[v._id] = { name: v.user, avatar: v.avatar }
+    })
+    Chat.find({'$or': [{from: user}, {to: user}]}, (err, doc) => {
+      if (!err) {
+        return res.json({ code: 0, msg: doc, users: users })
+      }
+    })
   })
 })
 

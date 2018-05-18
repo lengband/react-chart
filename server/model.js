@@ -17,6 +17,12 @@ const models = {
     'money': {type: String}
   },
   chat: {
+    'chatid': { type: String, require: true }, // 没对聊天唯一标识
+    'from': { type: String, require: true },
+    'to': { type: String, require: true },
+    'read': { type: Boolean, default: false }, // 是否已读
+    'content': { type: String, require: true, default: '' },
+    'create_time': { type: Number, defualt: new Date().getTime() }
   }
 }
 

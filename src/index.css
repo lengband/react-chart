@@ -18,4 +18,9 @@
   padding-right: 15px;
   text-align: right;
 }
-/* .stick */
+.stick-footer {
+  z-index: 10;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
