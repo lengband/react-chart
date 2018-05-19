@@ -54,7 +54,7 @@ Router.post('/register', (req, res) => {
       res.cookie('userid', _id)
       return res.json({code: 0, data: { user, type, _id }})
     })
-    // User.create({ user, type, pwd: md5Pwd(pwd) }, (err, doc) => { // 能弄到_id为啥用save方法
+    // User.create({ user, type, pwd: md5Pwd(pwd) }, (err, doc) => { // 能弄到_id为啥用save方法 create 和 save 的区别
     //   console.log(doc)
     //   if (err) {
     //     return res.json({ code: 1, msg: '注册失败，后端服务错误' })
@@ -76,6 +76,22 @@ Router.get('/getmsglist', (req, res) => {
         return res.json({ code: 0, msg: doc, users: users })
       }
     })
+  })
+})
+
+Router.post('/readmsg', (req, res) => {
+  const userid = req.cookies.userid // 当前登录人
+  const { from } = req.body // 接收到消息的那个人
+  Chat.update({
+    from, to: userid},
+    {'$set': {read: true}},
+    {'multi': true},
+    (err, doc) => {
+      // console.log(doc) // -> { n: 1, nModified: 1, ok: 1 } {共查询多少条，修改了多少条，ok=1表示成功}
+      if (!err) {
+        return res.json({code: 0, num: doc.nModified})
+      }
+      return res.json({code: 1, msg: '修改失败'})
   })
 })
 

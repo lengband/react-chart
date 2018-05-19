@@ -17,9 +17,9 @@ class User extends React.Component {
   logout () {
     const alert = Modal.alert
     alert('注销', '确认退出登录吗？', [
-      { text: '取消', onPress: () => console.log('cancel') },
+      { text: '取消', onPress: () => {} },
       { text: '确认', onPress: () => {
-        browserCookie.erase('userid')
+        browserCookie.erase('userid') // 清空 cookie
         this.props.logoutSubmit()
       } },
     ])

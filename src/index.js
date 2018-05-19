@@ -16,11 +16,22 @@ import reducers from './reducer'
 import './config'
 import './index.css'
 
-
-const store = createStore(reducers, compose(
-  applyMiddleware(thunk),
-  window.devToolsExtension ? window.devToolsExtension() : () => {}
-))
+// const store = createStore(reducers, compose( // 有兼容性问题
+//   applyMiddleware(thunk),
+//   window.devToolsExtension ? window.devToolsExtension() : function () {}
+// ))
+let store;
+if(!(window.__REDUX_DEVTOOLS_EXTENSION__ || window.__REDUX_DEVTOOLS_EXTENSION__)){ // 没有redux插件
+    store = createStore(
+      reducers,
+        applyMiddleware(thunk)
+    );
+}else{ //插件调试，未安装会报错
+    store = createStore(
+      reducers,
+        compose(applyMiddleware(thunk),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+    );
+}
 
 // boss genius ms msg
 ReactDOM.render(

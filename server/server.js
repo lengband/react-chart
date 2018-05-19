@@ -13,7 +13,7 @@ io.on('connection', socket => {
   socket.on('sendmsg', data => {
     const { from, to, msg } = data
     const chatid = [from, to].sort().join('_')
-    Chat.create({chatid, from, to, content: msg}, (err, doc) => {
+    Chat.create({chatid, from, to, create_time: +new Date(), content: msg}, (err, doc) => {
       if (!err) {
         io.emit('recvmsg', Object.assign({}, doc._doc))
       }

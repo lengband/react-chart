@@ -1,19 +1,20 @@
 import React from 'react'
-import { List, InputItem, NavBar, Icon } from 'antd-mobile'
+import { List, InputItem, NavBar, Icon, Grid } from 'antd-mobile'
 import { connect } from 'react-redux'
-import { getMegList, sendMsg, recvMsg } from '../../redux/chat.redux'
+import { getMegList, sendMsg, recvMsg, readMsg } from '../../redux/chat.redux'
 import { getChatId } from '../../util'
 
 @connect(
   state => state,
-  { getMegList, sendMsg, recvMsg }
+  { getMegList, sendMsg, recvMsg, readMsg }
 )
 class Chat extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       text: '',
-      msg: []
+      msg: [],
+      showEmoji: false
     }
   }
   componentDidMount () {
@@ -21,17 +22,30 @@ class Chat extends React.Component {
       this.props.getMegList()
       this.props.recvMsg()
     }
+    // this.fixCarousel()
+  }
+  componentWillUnmount () { // 退出或者隐藏当前路由会走这个hook
+    const to = this.props.match.params.user
+    this.props.readMsg(to)
+  }
+  fixCarousel () {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'))
+    }, 0)
   }
   handleSubmit () {
     const from = this.props.user._id
     const to = this.props.match.params.user
     const msg = this.state.text
     this.props.sendMsg({from, to, msg})
-    this.setState({ text: '' })
+    this.setState({
+      text: ''
+    })
   }
   render () {
+    const emoji = '😄 😃 😀 😊 😉 😍 😘 😚 😗 😙 😜 😝 😛 😳 😁 😔 😌 😒 😞 😣 😢 😂 😭 😪 😥 😰 😅 😓 😩 😫 😨 😱 😠 😡 😤 😖 😆 😋 😷 😎 😴 😵 😲 😟 😦 😧 😈 👿 😮 😬 😐 😕 😯 😶 😇 😏 😑 👲 👮 👷 💂 👶 👦 👧 👨 👩 👴 👵 👱 👼 👸 😺 😸 😻 😽 😼 🙀 😿 😹 😾 👹 👺 🙈 🙉 🙊 💀 👽 💩 🔥 ✨ 🌟 💫 💥 💢 💦 💧 💤 💨 👂 👀 👃 👅 👄 👍 👎 👌 👊 ✊ ✌ 👋 ✋ 👐 👆 👇 👉 👈 🙌 🙏 ☝ 👏 💪 🚶 🏃 💃 👫 👪 👬 👭 💏 💑 👯 🙆 🙅 💁 🙋 💆 💇 💅 👰 🙎 🙍 🙇 🎩 👑 👒 👟 👞 👡 👠 👢 👕 👔 👚 👗 🎽 👖 👘 👙 💼 👜 👝 👛 👓 🎀 🌂 💄 💛 💙 💜 💚 ❤ 💔 💗 💓 💕 💖 💞 💘 💌'
+                  .split(' ').filter(v => v).map(v => ({ text: v }))
     const Item = List.Item
-    console.log(this.props, 'pp')
     const userid = this.props.match.params.user // 获取当前聊天 userId ??? 为什么 params.user 能获取id
     const users = this.props.chat.users // 获取当前 user
     if (!users[userid]) {
@@ -49,10 +63,8 @@ class Chat extends React.Component {
         }}>
           { users[userid].name }
         </NavBar>
-
         {chatmsgs.map((v, i) => {
           const avatar = require(`../img/${users[v.from].avatar}.png`)
-          console.log(avatar);
           return v.from === userid ? (
             <List key={v._id}>
               <Item
@@ -68,15 +80,39 @@ class Chat extends React.Component {
         })}
         <div className="stick-footer">
           <List>
-          <InputItem
-            placeholder='请输入'
-            value={this.state.text}
-            onChange={v => this.setState({text: v})}
-            extra={<span onClick={() => this.handleSubmit()}>发送</span>}
-          >信息</InputItem>
+            <InputItem
+              placeholder='请输入'
+              value={this.state.text}
+              onChange={v => this.setState({text: v})}
+              extra={
+                <div>
+                  <span
+                    aria-label=''
+                    role='img'
+                    onClick={() => {
+                      this.setState({
+                        showEmoji: !this.state.showEmoji
+                      })
+                      this.fixCarousel()
+                    }}
+                    style={{ marginRight: 10 }} >😄</span>
+                  <span onClick={() => this.handleSubmit()}>发送</span>
+                </div>
+              }
+            >信息</InputItem>
           </List>
+          
+          {this.state.showEmoji ? (<Grid
+                    onClick={(e) => {
+                      this.setState({
+                        text: this.state.text + e.text
+                      })
+                    }}
+                    isCarousel={true}
+                    columnNum={9}
+                    carouselMaxRow={4}
+                    data={emoji}  />) : null}
         </div>
-        {/* <h2>chat with user: {this.props.match.params.user}</h2> */}
       </div>
     )
   }

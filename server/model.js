@@ -22,7 +22,7 @@ const models = {
     'to': { type: String, require: true },
     'read': { type: Boolean, default: false }, // 是否已读
     'content': { type: String, require: true, default: '' },
-    'create_time': { type: Number, defualt: new Date().getTime() }
+    'create_time': { type: Number, default: new Date().getTime() } // ??? 时间不对
   }
 }
 
