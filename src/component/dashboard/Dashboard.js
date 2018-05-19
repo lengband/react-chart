@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
     const user = this.props.user
     const navList = [
       {
-        path: '/boss',
+        path: '/boss', // 身份是 boss，看的是牛人列表
         text: '牛人',
         icon: 'boss',
         title: '牛人列表',

@@ -71,7 +71,7 @@ Router.get('/getmsglist', (req, res) => {
     userdoc.forEach(v => {
       users[v._id] = { name: v.user, avatar: v.avatar }
     })
-    Chat.find({'$or': [{from: user}, {to: user}]}, (err, doc) => {
+    Chat.find({'$or': [{from: user}, {to: user}]}, (err, doc) => { // ??? 为什么 from to 是一个人
       if (!err) {
         return res.json({ code: 0, msg: doc, users: users })
       }

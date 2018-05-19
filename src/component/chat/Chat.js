@@ -31,7 +31,8 @@ class Chat extends React.Component {
   }
   render () {
     const Item = List.Item
-    const userid = this.props.match.params.user // 获取当前 user
+    console.log(this.props, 'pp')
+    const userid = this.props.match.params.user // 获取当前聊天 userId ??? 为什么 params.user 能获取id
     const users = this.props.chat.users // 获取当前 user
     if (!users[userid]) {
       return null
@@ -60,7 +61,7 @@ class Chat extends React.Component {
           ) : (
             <List key={v._id}>
               <Item
-                extra={<img src={avatar} />}
+                extra={<img src={avatar} alt='' />}
                 className='chat-me'>{v.content}</Item>
             </List>
           )
